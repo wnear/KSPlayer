@@ -38,6 +38,7 @@ struct ContentView: View {
             .onChange(of: appModel.openURL) { url in
                 if let url {
                     #if !os(tvOS)
+                    print("open window, with url")
                     openWindow(value: url)
                     #endif
                     appModel.openURL = nil
@@ -46,6 +47,7 @@ struct ContentView: View {
             .onChange(of: appModel.openPlayModel) { model in
                 if let model {
                     #if !os(tvOS)
+                    print("open window, with model")
                     openWindow(value: model)
                     #endif
                     appModel.openPlayModel = nil

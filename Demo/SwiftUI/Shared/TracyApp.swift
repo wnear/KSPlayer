@@ -11,6 +11,12 @@ import KSPlayer
 import SwiftUI
 import UserNotifications
 
+
+extension KSVideoPlayerView {
+    public var player_core: MediaPlayerProtocol? {
+        self.playerCoordinator.playerLayer?.player
+    }
+}
 @main
 struct TracyApp: App {
     #if os(macOS)
@@ -77,7 +83,21 @@ struct TracyApp: App {
         #if !os(tvOS)
         WindowGroup("player", for: URL.self) { $url in
             if let url {
-                KSVideoPlayerView(url: url)
+                let player = KSVideoPlayerView(url: url)
+                VStack{
+                    player
+                    Button("play"){
+                        // control playback from outside.
+                        print("play or pause")
+                        if let pb = player.player_core{
+                            if pb.isPlaying{
+                                pb.pause()
+                            } else {
+                                pb.play()
+                            }
+                        }
+                    }
+                }
             }
         }
         #if os(macOS)
@@ -87,7 +107,10 @@ struct TracyApp: App {
         #if !os(tvOS)
         WindowGroup("player", for: MovieModel.self) { $model in
             if let model {
-                KSVideoPlayerView(model: model)
+                VStack{
+                    KSVideoPlayerView(model: model)
+                    Text("world")
+                }
             }
         }
         #if os(macOS)
